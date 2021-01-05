@@ -1,4 +1,6 @@
 # Imports
+import cv2
+import os
 
 # Program Description
 # This program will take a video file as an input, and will output a trimmed version of the file
@@ -18,3 +20,49 @@
 # to discard that last frame **
 # Frame 8 - Frame 7 = Difference, keep frame 7
 # If last frame in whole video, keep it
+
+def convertVideoToImages():
+    # eventually, user will be able to select multiple videos at once to process
+    print("test")
+    # cap = cv2.VideoCapture('Add file path')
+    # i = 0
+    # # save each frame to its corresponding folder
+    # while cap.isOpened():
+    #     ret, frame = cap.read()
+    #     if not ret:
+    #         break
+    #     cv2.imwrite('frame' + str(i) + '.jpg', frame)
+    #     i += 1
+    # cap.release()
+    # cv2.destroyAllWindows()
+
+def removeUnwantedFrames():
+    # algorithm here
+    print("Got here")
+
+def makeVideo():
+    # take all cleaned up frames and make into video
+    print("Got here")
+
+def main():
+    print("Hello and Welcome to Video Cleaner!")
+    print("Please input the file directory in convertVideoToFrames() method before running")
+    input("Press Enter to start")
+
+    print("Splitting video...")
+    convertVideoToImages()
+    print("Done")
+
+    input("Press Enter to continue")
+
+    print("Removing all unwanted frames...")
+    removeUnwantedFrames()
+    print("Done")
+
+    print("Exporting into video, please don't halt the program until process is complete")
+    makeVideo()
+    print("Process Finished")
+
+
+main()
+
