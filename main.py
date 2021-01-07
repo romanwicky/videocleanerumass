@@ -1,6 +1,8 @@
 # Imports
 import cv2
 import os
+import glob
+import numpy as np
 
 # Program Description
 # This program will take a video file as an input, and will output a trimmed version of the file
@@ -20,40 +22,77 @@ import os
 # to discard that last frame **
 # Frame 8 - Frame 7 = Difference, keep frame 7
 # If last frame in whole video, keep it
+import numpy as np
+
 
 def convertVideoToImages():
     # eventually, user will be able to select multiple videos at once to process
-    print("test")
-    # cap = cv2.VideoCapture('Add file path')
-    # i = 0
-    # # save each frame to its corresponding folder
-    # while cap.isOpened():
-    #     ret, frame = cap.read()
-    #     if not ret:
-    #         break
-    #     cv2.imwrite('frame' + str(i) + '.jpg', frame)
-    #     i += 1
-    # cap.release()
-    # cv2.destroyAllWindows()
+    cap = cv2.VideoCapture('C:/Users/Roman/Desktop/videos/vid1.avi')
+    path = 'C:/Users/Roman/Desktop/videos/frames'
+    i = 0
+    # save each frame to its corresponding folder
+    while cap.isOpened():
+        ret, frame = cap.read()
+        if not ret:
+            break
+        cv2.imwrite(os.path.join(path, 'frame' + str(i) + '.jpg'), frame)
+        i += 1
+    cap.release()
+    cv2.destroyAllWindows()
+
 
 def removeUnwantedFrames():
-    # algorithm here
-    print("Got here")
+    path = 'C:/Users/Roman/Desktop/videos/frames/'
+
+    # set i = number of frames
+    listofframes = os.listdir(path)  # dir is your directory path
+    count = len(listofframes)
+    # print(count)
+    # list of all frames that need to be deleted
+    framestodelete = []
+
+    # look at specific region in image, if it's black, then we want to delete it
+    for i in range(0, count - 1):
+        img = cv2.imread(path + 'frame' + str(i) + '.jpg')
+        region = img[250:300, 250:300]
+        sumofpixels = np.sum(region)
+
+        if sumofpixels == 0:
+            framestodelete.append('frame' + str(i))
+
+    # delete all frames from list
+    for i in range(0, len(framestodelete)):
+        os.remove('C:/Users/Roman/Desktop/videos/frames/' + str(framestodelete[i]) + '.jpg')
+        print(str(framestodelete[i]))
+
 
 def makeVideo():
     # take all cleaned up frames and make into video
-    print("Got here")
+    frame_array = []
+    for filename in glob.glob('C:/Users/Roman/Desktop/videos/frames/*.jpg'):
+        img = cv2.imread(filename)
+        height, width, layers = img.shape
+        size = (width, height)
+        frame_array.append(img)
+
+    output = cv2.VideoWriter('C:/Users/Roman/Desktop/videos/frames/trimmed.avi', cv2.VideoWriter_fourcc(*'DIVX'), 20, size)
+
+    for i in range(len(frame_array)):
+        output.write(frame_array[i])
+
+    output.release()
+
 
 def main():
-    print("Hello and Welcome to Video Cleaner!")
+    newpath = r'C:\Users\Roman\Desktop\videos\frames'
+    if not os.path.exists(newpath):
+        os.makedirs(newpath)
     print("Please input the file directory in convertVideoToFrames() method before running")
     input("Press Enter to start")
 
     print("Splitting video...")
     convertVideoToImages()
     print("Done")
-
-    input("Press Enter to continue")
 
     print("Removing all unwanted frames...")
     removeUnwantedFrames()
@@ -65,4 +104,3 @@ def main():
 
 
 main()
-
