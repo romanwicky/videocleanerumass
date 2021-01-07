@@ -10,6 +10,9 @@ import numpy as np
 # The frames that need to be deleted are one's with no footage of the recorded tests
 
 # Algorithm Description
+
+# Algo 1
+
 # This algorithm will iterate through each frame of the video
 # Ex: Frame 1-3 need to be kept, frame 4-6 needs to be skipped, frame 7-8 kept
 # Frame 1 - Frame 2 = Difference, keep frame 1
@@ -22,7 +25,18 @@ import numpy as np
 # to discard that last frame **
 # Frame 8 - Frame 7 = Difference, keep frame 7
 # If last frame in whole video, keep it
-import numpy as np
+
+# Algo 2
+
+# This one is much simpler, since we know for sure that a if a certain area of the screen
+# is Completly black, then that is a frame we want to discard, hence the "No picture" seconds
+# of the video. 
+# Open file with cv2, crop it to [250:300, 250:300] [y1, y2], [x1, x2] where
+# (x1,y1) is the top left of the image, the (x2,y2) is the bottom right
+# By cropping and getting this specific area, and summing up the pixel values of the image
+# if the value is = 0, then that is a frame we want to discard
+# This removes any issues that might happen with double iterations, and deleting files as the algorithm
+# works
 
 
 def convertVideoToImages():
