@@ -104,7 +104,6 @@ def removeUnwantedFrames(dirinfo):
         img = cv2.imread(path + '/frame' + str(i) + '.jpg')
         region = img[y1:y2, x1:x2]
         sumofpixels = np.sum(region)
-        print(sumofpixels)
 
         if sumofpixels == 0:
             framestodelete.append('frame' + str(i))
