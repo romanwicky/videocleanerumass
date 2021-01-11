@@ -7,7 +7,6 @@ import numpy as np
 import tkinter as tk
 from tkinter import filedialog
 
-
 # ** IMPORTANT NOTICE **
 # Please run this program as administrator, otherwise the cleanup process will not be able to delete the remaining files
 
@@ -41,6 +40,7 @@ from tkinter import filedialog
 # if the value is = 0, then that is a frame we want to discard
 # This removes any issues that might happen with double iterations, and deleting files as the algorithm
 # works
+
 
 # This class will hold the file location of the video to process, the path of the frames folder
 # The path to the output video, and the frames per second of the video to process
@@ -88,10 +88,23 @@ def removeUnwantedFrames(dirinfo):
     # This obviously isn't the best way to differenciate a frame we want to keep and want to delete,
     # especially if the resolution of the video feed changes, but because all the videos are the same size
     # it does the job well.
+    imgcropselector = cv2.imread(path + '/frame' + str(5) + '.jpg')
+    fromcenter = False
+
+    roi = cv2.selectROI("Select Crop Area - Press Enter to Continue", imgcropselector, fromcenter)
+    cv2.destroyWindow('Select Crop Area - Press Enter to Continue')
+
+    x1 = roi[0]
+    x2 = roi[0] + roi[2]
+    y1 = roi[1]
+    y2 = roi[1] + roi[3]
+
+    # img[250:300, 250:300]
     for i in range(0, count - 1):
         img = cv2.imread(path + '/frame' + str(i) + '.jpg')
-        region = img[250:300, 250:300]
+        region = img[x1:x2, y1:y2]
         sumofpixels = np.sum(region)
+        print(sumofpixels)
 
         if sumofpixels == 0:
             framestodelete.append('frame' + str(i))
@@ -191,6 +204,7 @@ def main():
 
 # Tkinter Stuff
 window = tk.Tk()
+window.title("Video Trimmer - Roman Wicky van Doyer 2021")
 window.geometry("500x300")
 
 
