@@ -102,7 +102,7 @@ def removeUnwantedFrames(dirinfo):
     # img[250:300, 250:300]
     for i in range(0, count - 1):
         img = cv2.imread(path + '/frame' + str(i) + '.jpg')
-        region = img[x1:x2, y1:y2]
+        region = img[y1:y2, x1:x2]
         sumofpixels = np.sum(region)
         print(sumofpixels)
 
