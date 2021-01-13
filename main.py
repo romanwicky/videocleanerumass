@@ -100,6 +100,7 @@ def removeUnwantedFrames(dirinfo):
     y2 = roi[1] + roi[3]
 
     # img[250:300, 250:300]
+    # this goes [y1:y+h, x1:x+w]
     for i in range(0, count - 1):
         img = cv2.imread(path + '/frame' + str(i) + '.jpg')
         region = img[y1:y2, x1:x2]
